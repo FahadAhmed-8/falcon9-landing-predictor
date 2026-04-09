@@ -12,14 +12,34 @@ dashboard → ML prediction.
 
 ## Demo
 
-Interactive Dash dashboard with KPI cards, site filter, payload range slider,
-and three analytical views:
+Interactive Dash dashboard with KPI cards, site filter, payload range
+slider, and **five tabs**:
 
-- **Success by site** — donut of successful launches across launch sites
-- **Payload vs outcome** — scatter colored by booster version
-- **Outcome by orbit** — success rate per orbit
+| Tab | What it shows |
+|---|---|
+| Success by site | Donut of successful launches across launch sites |
+| Payload vs outcome | Scatter colored by booster version |
+| Outcome by orbit | Success rate per orbit |
+| **Predict** | Form → trained classifier → landing probability |
+| **Model performance** | Leaderboard, confusion matrix, ROC curve |
 
 > _Add a screenshot or GIF here once deployed._
+
+## Model
+
+Four candidates are trained with `GridSearchCV` (10-fold CV):
+Logistic Regression · SVM · Decision Tree · KNN. The full feature
+pipeline (`StandardScaler` + `OneHotEncoder` + booleans) is wrapped in a
+single sklearn `Pipeline` and saved as `models/falcon9_clf.joblib`, so
+the Dash app accepts raw form inputs end-to-end with no manual encoding.
+
+Best model on the held-out test set: see `models/metrics.json`.
+
+Retrain anytime:
+
+```bash
+python -m src.models.train
+```
 
 ---
 
@@ -27,12 +47,22 @@ and three analytical views:
 
 ```
 falcon9-landing-predictor/
-├── app.py                  # Dash app entrypoint
+├── app.py                       # Dash app entrypoint (5 tabs incl. Predict)
+├── src/
+│   └── models/
+│       ├── schema.py            # single source of truth for features
+│       └── train.py             # reproducible training script
+├── models/
+│   ├── falcon9_clf.joblib       # trained sklearn Pipeline
+│   └── metrics.json             # CV/test scores, leaderboard, ROC, CM
 ├── data/
-│   └── spacex_launch_data.csv   # bundled dataset (no remote fetch on boot)
-├── notebooks/              # data collection, wrangling, EDA, ML
-├── requirements.txt        # pinned deps
-├── Dockerfile              # container build
+│   └── spacex_launch_data.csv   # bundled dataset
+├── notebooks/                   # 01..07: collection → wrangling → EDA → ML
+├── docs/
+│   ├── PHASE_1.md
+│   └── PHASE_2.md
+├── requirements.txt
+├── Dockerfile
 └── README.md
 ```
 
@@ -89,13 +119,13 @@ works fully offline.
 
 ## Roadmap
 
-- [ ] Add Prediction tab — load `models/falcon9_clf.joblib` and serve live predictions
-- [ ] Model performance tab (confusion matrix, ROC, PR curve, CV scores)
-- [ ] Embed folium launch-site proximity map
-- [ ] FastAPI `/predict` endpoint, called by Dash
-- [ ] MLflow experiment tracking + DVC for data versioning
-- [ ] GitHub Actions CI (ruff + pytest + docker build)
-- [ ] Pytest coverage of data transforms
+- [x] **Phase 1** — repo restructure, pinned deps, local data cache, polished Dash UI, Docker
+- [x] **Phase 2** — sklearn Pipeline trained & served in-app, Predict + Performance tabs
+- [ ] **Phase 3** — Deploy to Hugging Face Spaces / Fly.io / Cloud Run
+- [ ] **Phase 4** — Embed folium launch-site proximity map
+- [ ] **Phase 5** — FastAPI `/predict` endpoint, called by Dash
+- [ ] **Phase 6** — MLflow experiment tracking + DVC for data versioning
+- [ ] **Phase 7** — GitHub Actions CI (ruff + pytest + docker build)
 
 ---
 

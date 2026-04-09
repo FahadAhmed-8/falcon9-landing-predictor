@@ -1,0 +1,96 @@
+{
+  "best_model": "Decision Tree",
+  "best_params": {
+    "clf__criterion": "entropy",
+    "clf__max_depth": 4,
+    "clf__min_samples_leaf": 2,
+    "clf__min_samples_split": 2
+  },
+  "cv_score": 0.8625,
+  "test_accuracy": 0.7777777777777778,
+  "test_f1": 0.8333333333333334,
+  "test_roc_auc": 0.7847222222222223,
+  "confusion_matrix": [
+    [
+      4,
+      2
+    ],
+    [
+      2,
+      10
+    ]
+  ],
+  "labels": [
+    "Did not land",
+    "Landed"
+  ],
+  "roc_curve": {
+    "fpr": [
+      0.0,
+      0.16666666666666666,
+      0.16666666666666666,
+      0.3333333333333333,
+      1.0
+    ],
+    "tpr": [
+      0.0,
+      0.5,
+      0.75,
+      0.8333333333333334,
+      1.0
+    ]
+  },
+  "n_train": 72,
+  "n_test": 18,
+  "leaderboard": [
+    {
+      "name": "Decision Tree",
+      "cv_score": 0.8625,
+      "test_accuracy": 0.7777777777777778,
+      "test_f1": 0.8333333333333334,
+      "test_roc_auc": 0.7847222222222223,
+      "best_params": {
+        "clf__criterion": "entropy",
+        "clf__max_depth": 4,
+        "clf__min_samples_leaf": 2,
+        "clf__min_samples_split": 2
+      }
+    },
+    {
+      "name": "KNN",
+      "cv_score": 0.8625,
+      "test_accuracy": 0.6111111111111112,
+      "test_f1": 0.6666666666666666,
+      "test_roc_auc": 0.7013888888888891,
+      "best_params": {
+        "clf__n_neighbors": 7,
+        "clf__p": 1,
+        "clf__weights": "uniform"
+      }
+    },
+    {
+      "name": "Logistic Regression",
+      "cv_score": 0.8482142857142858,
+      "test_accuracy": 0.7222222222222222,
+      "test_f1": 0.8,
+      "test_roc_auc": 0.75,
+      "best_params": {
+        "clf__C": 0.1,
+        "clf__penalty": "l2",
+        "clf__solver": "lbfgs"
+      }
+    },
+    {
+      "name": "SVM",
+      "cv_score": 0.8375,
+      "test_accuracy": 0.8333333333333334,
+      "test_f1": 0.8888888888888888,
+      "test_roc_auc": 0.75,
+      "best_params": {
+        "clf__C": 31.622776601683793,
+        "clf__gamma": 0.001,
+        "clf__kernel": "rbf"
+      }
+    }
+  ]
+}
