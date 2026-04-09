@@ -1,3 +1,15 @@
+---
+title: Falcon 9 Landing Predictor
+emoji: 🚀
+colorFrom: blue
+colorTo: indigo
+sdk: docker
+app_port: 8050
+pinned: false
+license: mit
+short_description: End-to-end ML predicting Falcon 9 first-stage landings
+---
+
 # Falcon 9 Landing Predictor
 
 > **End-to-end ML system predicting Falcon 9 first-stage landing success — data pipeline, model, and live Dash dashboard. Dockerized.**
@@ -121,7 +133,7 @@ works fully offline.
 
 - [x] **Phase 1** — repo restructure, pinned deps, local data cache, polished Dash UI, Docker
 - [x] **Phase 2** — sklearn Pipeline trained & served in-app, Predict + Performance tabs
-- [ ] **Phase 3** — Deploy to Hugging Face Spaces / Fly.io / Cloud Run
+- [x] **Phase 3** — Deployed to Hugging Face Spaces (Docker SDK)
 - [ ] **Phase 4** — Embed folium launch-site proximity map
 - [ ] **Phase 5** — FastAPI `/predict` endpoint, called by Dash
 - [ ] **Phase 6** — MLflow experiment tracking + DVC for data versioning

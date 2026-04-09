@@ -11,3 +11,5 @@ notebooks/
 README.md
 .vscode
 .idea
+.claude
+docs/

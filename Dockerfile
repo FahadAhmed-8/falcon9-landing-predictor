@@ -22,6 +22,7 @@ EXPOSE 8050
 
 # Healthcheck — Dash serves the layout at /
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-    CMD python -c "import urllib.request,sys; urllib.request.urlopen('http://localhost:8050'); sys.exit(0)" || exit 1
+    CMD python -c "import os,urllib.request,sys; urllib.request.urlopen(f'http://localhost:{os.environ.get(\"PORT\",\"8050\")}'); sys.exit(0)" || exit 1
 
-CMD ["gunicorn", "app:server", "-b", "0.0.0.0:8050", "--workers", "2", "--timeout", "60"]
+# Shell form so $PORT is expanded at runtime — works on HF Spaces, Fly.io, Cloud Run, Render
+CMD ["sh", "-c", "gunicorn app:server -b 0.0.0.0:${PORT:-8050} --workers 2 --timeout 60"]
