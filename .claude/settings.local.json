@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -sSf -o data/spacex_launch_data.csv \"https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBM-DS0321EN-SkillsNetwork/datasets/dataset_part_2.csv\")",
+      "Bash(mv \"jupyter-labs-spacex-data-collection-api \\(1\\).ipynb\" \"notebooks/01_data_collection_api.ipynb\")",
+      "Bash(mv \"jupyter-labs-webscraping \\(1\\).ipynb\" \"notebooks/02_data_collection_webscrape.ipynb\")",
+      "Bash(mv \"labs-jupyter-spacex-Data wrangling.ipynb\" \"notebooks/03_data_wrangling.ipynb\")",
+      "Bash(mv \"jupyter-labs-eda-sql-coursera_sqllite.ipynb\" \"notebooks/04_eda_sql.ipynb\")",
+      "Bash(mv \"edadataviz.ipynb\" \"notebooks/05_eda_viz.ipynb\")",
+      "Bash(python -c \"import app; print\\('OK rows=', len\\(app.spacex_df\\), 'cols=', list\\(app.spacex_df.columns\\)\\)\")",
+      "Bash(pip install:*)",
+      "Bash(python -c ':*)",
+      "Bash(python -c \"import app; app.update_pie\\('ALL', [0, 10000]\\); print\\('OK'\\)\")"
+    ]
+  }
+}
