@@ -432,7 +432,7 @@ app.layout = dbc.Container(
             html.Small(
                 [
                     "Built with Dash & Plotly · ",
-                    html.A("source", href="https://github.com/", className="text-decoration-none"),
+                    html.A("source", href="https://github.com/FahadAhmed-8/falcon9-landing-predictor", className="text-decoration-none"),
                 ],
                 className="text-muted",
             ),

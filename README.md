@@ -12,6 +12,8 @@ short_description: End-to-end ML predicting Falcon 9 first-stage landings
 
 # Falcon 9 Landing Predictor
 
+[![Open in Spaces](https://huggingface.co/datasets/huggingface/badges/resolve/main/open-in-hf-spaces-md.svg)](https://huggingface.co/spaces/fahadahmed08/falcon9-landing-predictor)
+
 > **End-to-end ML system predicting Falcon 9 first-stage landing success — data pipeline, model, and live Dash dashboard. Dockerized.**
 
 A SpaceX launch costs ~$62M; competitors quote upward of $165M. Most of
