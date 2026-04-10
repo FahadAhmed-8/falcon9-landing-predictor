@@ -15,11 +15,13 @@ from pathlib import Path
 
 import dash
 import dash_bootstrap_components as dbc
+import folium
 import joblib
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 from dash import Input, Output, State, dcc, html, no_update
+from folium.plugins import MarkerCluster, MousePosition
 
 from src.models.schema import BLOCKS, FEATURES, LAUNCH_SITES, ORBITS
 
@@ -147,6 +149,66 @@ controls = dbc.Card(
     ),
     className="shadow-sm mb-4",
 )
+
+
+# ---------- Launch sites map ----------
+def build_launch_map() -> str:
+    """Build a folium map of launch sites with success/failure markers. Returns HTML string."""
+    # Centre on Florida (most launches)
+    m = folium.Map(location=[28.5, -80.6], zoom_start=4, tiles="CartoDB dark_matter")
+
+    # Per-site circles and labels
+    sites = spacex_df.groupby("LaunchSite").agg(
+        Lat=("Latitude", "first"), Lon=("Longitude", "first"),
+        Launches=("Class", "size"), Successes=("Class", "sum"),
+    ).reset_index()
+
+    for _, row in sites.iterrows():
+        rate = row["Successes"] / row["Launches"] * 100
+        folium.Circle(
+            location=[row["Lat"], row["Lon"]],
+            radius=row["Launches"] * 500,
+            color="#2ecc71" if rate >= 60 else "#e74c3c",
+            fill=True,
+            fill_opacity=0.4,
+            tooltip=(
+                f"<b>{row['LaunchSite']}</b><br>"
+                f"Launches: {row['Launches']}<br>"
+                f"Successes: {int(row['Successes'])}<br>"
+                f"Rate: {rate:.0f}%"
+            ),
+        ).add_to(m)
+
+    # Individual launch markers clustered
+    cluster = MarkerCluster(name="Individual launches").add_to(m)
+    for _, r in spacex_df.iterrows():
+        color = "green" if r["Class"] == 1 else "red"
+        icon = "check" if r["Class"] == 1 else "times"
+        folium.Marker(
+            location=[r["Latitude"], r["Longitude"]],
+            icon=folium.Icon(color=color, icon=icon, prefix="fa"),
+            tooltip=(
+                f"Flight #{int(r['FlightNumber'])}<br>"
+                f"Payload: {r['PayloadMass']:,.0f} kg<br>"
+                f"Orbit: {r['Orbit']}<br>"
+                f"{'Landed' if r['Class'] == 1 else 'Did not land'}"
+            ),
+        ).add_child(folium.Popup(
+            f"<b>Flight {int(r['FlightNumber'])}</b><br>"
+            f"{r['BoosterVersion']}<br>"
+            f"Payload: {r['PayloadMass']:,.0f} kg → {r['Orbit']}<br>"
+            f"{'✓ Landed' if r['Class'] == 1 else '✗ Did not land'}",
+            max_width=250,
+        )).add_to(cluster)
+
+    # Mouse position + layer control
+    MousePosition(position="topright", separator=" | ").add_to(m)
+    folium.LayerControl(collapsed=False).add_to(m)
+
+    return m._repr_html_()
+
+
+launch_map_html = build_launch_map()
 
 
 # ---------- Prediction tab ----------
@@ -387,7 +449,7 @@ app.layout = dbc.Container(
                     ),
                     html.P(
                         "Falcon 9 first-stage landing analytics — explore launch outcomes by "
-                        "site, payload and booster version.",
+                        "site, payload, booster version, and interactive launch-site map.",
                         className="text-muted",
                     ),
                     html.Hr(),
@@ -412,6 +474,14 @@ app.layout = dbc.Container(
                     dcc.Graph(id="orbit-bar"),
                     label="Outcome by orbit",
                     tab_id="orbit",
+                ),
+                dbc.Tab(
+                    html.Iframe(
+                        srcDoc=launch_map_html,
+                        style={"width": "100%", "height": "600px", "border": "none"},
+                    ),
+                    label="Launch sites map",
+                    tab_id="map",
                 ),
                 dbc.Tab(
                     html.Div(prediction_form(), className="mt-3"),

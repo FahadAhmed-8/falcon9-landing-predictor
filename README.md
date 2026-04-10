@@ -27,13 +27,14 @@ dashboard → ML prediction.
 ## Demo
 
 Interactive Dash dashboard with KPI cards, site filter, payload range
-slider, and **five tabs**:
+slider, and **six tabs**:
 
 | Tab | What it shows |
 |---|---|
 | Success by site | Donut of successful launches across launch sites |
 | Payload vs outcome | Scatter colored by booster version |
 | Outcome by orbit | Success rate per orbit |
+| **Launch sites map** | Interactive folium map with per-launch success/failure markers |
 | **Predict** | Form → trained classifier → landing probability |
 | **Model performance** | Leaderboard, confusion matrix, ROC curve |
 
@@ -136,7 +137,7 @@ works fully offline.
 - [x] **Phase 1** — repo restructure, pinned deps, local data cache, polished Dash UI, Docker
 - [x] **Phase 2** — sklearn Pipeline trained & served in-app, Predict + Performance tabs
 - [x] **Phase 3** — Deployed to Hugging Face Spaces (Docker SDK)
-- [ ] **Phase 4** — Embed folium launch-site proximity map
+- [x] **Phase 4** — Interactive folium launch-site map with success/failure markers
 - [ ] **Phase 5** — FastAPI `/predict` endpoint, called by Dash
 - [ ] **Phase 6** — MLflow experiment tracking + DVC for data versioning
 - [ ] **Phase 7** — GitHub Actions CI (ruff + pytest + docker build)
